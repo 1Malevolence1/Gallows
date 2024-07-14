@@ -2,16 +2,16 @@ package org.example;
 
 import java.util.Random;
 
-public class DictionaryManager {
+public class RandomWord {
 
 
-    private final Dictionary dictionary;
-    public DictionaryManager( ) {
-        this.dictionary = new Dictionary();
+    private final ListWordsForGame list;
+    public RandomWord( ) {
+        this.list = new ListWordsForGame();
     }
 
     public String getRandomWord(){
         Random random = new Random();
-        return dictionary.getDictionary().get(random.nextInt(dictionary.getDictionary().size()));
+        return list.getDictionary().get(random.nextInt(list.getDictionary().size()));
     }
 }

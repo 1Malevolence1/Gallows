@@ -1,10 +1,8 @@
 package org.example;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
-public class HiddenWordManager {
+public class WordRevealer {
 
     private HiddenWord hiddenWord;
 
@@ -12,71 +10,61 @@ public class HiddenWordManager {
 
     private char[] revealed;
 
-    public HiddenWordManager(DictionaryManager manager) {
+    public WordRevealer(RandomWord manager, ListIncorrectlyLetters listIncorrectlyLetters) {
         this.hiddenWord = new HiddenWord(manager.getRandomWord());
-        this.listIncorrectlyLetters = new ListIncorrectlyLetters();
+        this.listIncorrectlyLetters = listIncorrectlyLetters;
         this.revealed = new char[hiddenWord.getHiddenWord().length()];
         Arrays.fill(revealed, '_');
-        revealed = printStartGameHiddenWord();
+        revealRandomLetters(2);
     }
 
-    public String printHiddenWord(){
+    private void revealRandomLetters(int count) {
+        Set<Character> revealedLetters = new HashSet<>();
+        String word = hiddenWord.getHiddenWord();
+        int revealedCount = 0;
+
+        while (revealedCount < count) {
+
+
+            int item = RandomLetters.randomItem(word);
+            char letter = word.charAt(item);
+
+            if (!revealedLetters.contains(letter)) {
+                revealedLetters.add(letter);
+                revealLetter(letter);
+                revealedCount++;
+            }
+        }
+    }
+
+
+
+
+    public String printHiddenWord() {
         return Arrays.toString(revealed);
     }
 
-    public char[] printStartGameHiddenWord() {
-        int count = 0;
-
-        while (count < 2) {
-            char letter = randomLetter();
-
-            for (int item = 0; item < hiddenWord.getHiddenWord().length(); item++) {
-
-                if (hiddenWord.getHiddenWord().charAt(item) == letter) {
-                    revealed[item] = letter;
-                    count++;
-                }
-            }
-        }
-        return revealed;
-    }
-
-    public boolean revealLetter(char letter){
+    public boolean revealLetter(char letter) {
         boolean findLetter = false;
         for (int i = 0; i < hiddenWord.getHiddenWord().length(); i++) {
-            if(hiddenWord.getHiddenWord().charAt(i) == letter){
+            if (hiddenWord.getHiddenWord().charAt(i) == letter) {
                 revealed[i] = letter;
                 findLetter = true;
             }
 
         }
-        if(!findLetter) {
+        if (!findLetter) {
             listIncorrectlyLetters.addLetterIncorractlyList(letter);
             return false;
         }
         return true;
     }
 
-    public void printListIncorrectlyLetters(){
-        if(listIncorrectlyLetters == null) System.out.println();
-        else System.out.println("Неверные буквы: " + listIncorrectlyLetters.getIncorrectlyGuessedLetters());
-    }
-    private char randomLetter(){
-        String[] letters = hiddenWord.getHiddenWord().split("");;
-        int item = (int) Math.floor(Math.random() * letters.length);
-        return letters[item].charAt(0);
-    }
-
-    public String getHiddenWord(){
+    public String getHiddenWord() {
         return hiddenWord.getHiddenWord();
     }
 
-    public boolean comparison(){
-        StringBuilder stringBuilder = new StringBuilder();
-        for (char letter: revealed
-             ) {
-            stringBuilder.append(letter);
-        }
-        return hiddenWord.getHiddenWord().contentEquals(stringBuilder);
+    public boolean comparison() {
+        return hiddenWord.getHiddenWord().contentEquals(new String(revealed));
     }
 }

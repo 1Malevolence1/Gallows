@@ -1,22 +1,31 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class DictionaryLetters {
-    private List<String> incorrectlyGuessedLetters;
+public class ListIncorrectlyLetters {
+    private Set<Character> incorrectlyGuessedLetters;
 
 
-    public DictionaryLetters() {
-        this.incorrectlyGuessedLetters = new ArrayList<>();
+    public ListIncorrectlyLetters() {
+        incorrectlyGuessedLetters = new HashSet<>();
     }
 
-    public List<String> addLetterIncorractlyList(String letter){
-        return addLetter(incorrectlyGuessedLetters, letter);
+    public void addLetterIncorractlyList(Character letter){
+        incorrectlyGuessedLetters.add(letter);
+    }
+    public Set<Character> getIncorrectlyGuessedLetters() {
+        return incorrectlyGuessedLetters;
     }
 
-    private List<String> addLetter(List<String> list, String letter){
-        list.add(letter);
-        return list;
+
+    public void printListIncorrectlyLetters(){
+         System.out.println("Неверные буквы: " + incorrectlyGuessedLetters);
+    }
+
+    public void clear(){
+        incorrectlyGuessedLetters.clear();
     }
 }
